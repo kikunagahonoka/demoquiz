@@ -1,0 +1,89 @@
+body {
+    background-color: #005497;
+    margin: 0;
+    font-family: toppan-bunkyu-midashi-go-std, sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+
+.header {
+    padding: 20px;
+    margin:0 auto;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    width: 300px;
+}
+.logo{
+    width: 300px;
+}
+
+.main{
+    padding: 0px;
+    margin:0 auto;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+
+.content{
+    color: azure;
+    margin: auto;
+    width: auto;
+}
+
+.sss{
+    margin: 0 auto;
+    color: #ffffff;
+    padding: 5px;
+}
+
+
+.visual{
+    width: 300px;
+    margin:0 auto;
+}
+
+.pt{
+    font-size: 60px;
+    float: left;
+    margin: 10px auto;
+}
+
+.botton{
+    text-align: center;
+    margin: 50px auto;
+}
+
+    .startbutton {
+        font-family: toppan-bunkyu-midashi-go-std, sans-serif;
+        font-weight: 900;
+        font-style: normal;
+        background-color: #FFEF00;
+        border: none;
+        color: #707070;
+        display:inline-block; 
+        font-size :27px; 
+        cursor:pointer; 
+        border-radius :32px;
+        height: 63px;
+        line-height: 2.0;
+        width: 315px;
+        font-size: 27px;
+        
+    }
+
+.footer{
+    text-align: center
+}
+
+.tokan{
+    color: #F8F8F8;
+    font-family: toppan-bunkyu-midashi-go-std, sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: small;
+    margin: 10px;
+}
