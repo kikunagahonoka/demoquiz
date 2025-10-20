@@ -4,20 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>防災クイズ</title>
-    <meta name="description" content="6点以上" />
+    <meta name="description" content="正誤画面" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.png" />
-
-    <!-- OGP -->
     <meta property="og:site_name" content="a防災クイズ" />
     <meta property="og:url" content="URL" />
     <meta property="og:type" content="website or article" />
-    <meta property="og:title" content="リザルト" />
+    <meta property="og:title" content="正誤画面" />
     <meta property="og:description" content="タイトル" />
     <meta property="og:image" content="URL" />
     <meta property="og:locale" content="ja_JP" />
-
-    <link rel="stylesheet" href="sum.css" />
+    <link rel="stylesheet" href="result1.css" />
 
     <!-- アドビフォント -->
     <script>
@@ -25,36 +22,24 @@
         var config = { kitId: 'hnx0kbj', scriptTimeout: 3000, async: true },
             h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),
             tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;
-        h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;
-        tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};
-        s.parentNode.insertBefore(tk,s)
+        h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';
+        tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
       })(document);
     </script>
   </head>
   <body>
     <div class="header">
-      <img class="logo" src="img/logo.png" alt="logo" />
+      <img class="logo" src="img/logo.png" alt="logo">
     </div>
 
-    <div class="main">
-      <div class="content">
-        <div class="point" aria-live="polite">
-          <p class="pt" id="score">0</p>
-          <p class="pt"> / <span id="total">10</span> pt</p>
-        </div>
+    <div class="content">
+      <div class="explainbox" id="resultBox">
+        <!-- JSで内容を差し込む -->
       </div>
+    </div>
 
-      <div class="aaa">
-        <img class="visual" src="https://github.com/kikunagahonoka/demoquiz/blob/master/image.png?raw=true" alt="result visual" />
-      </div>
-
-      <div class="sss">
-        <p id="message" align="center">この画面を係に見せてください</p>
-      </div>
-
-      <div class="botton">
-        <button type="button" class="startbutton" id="restartBtn">RESTART</button>
-      </div>
+    <div class="botton">
+      <button type="button" class="nextbutton" id="nextBtn">NEXT</button>
     </div>
 
     <div class="footer">
@@ -62,40 +47,31 @@
     </div>
 
     <script>
-      // ---- 設定（index.js と合わせて）----
-      const TOTAL = 10;
+      const box = document.getElementById("resultBox");
+      const nextBtn = document.getElementById("nextBtn");
 
-      // ---- 状態読み込み ----
+      const lastCorrect = localStorage.getItem("lastCorrect") === "1";
+      const explain = localStorage.getItem("lastExplain") || "";
+      const idx = Number(localStorage.getItem("quizIdx") || "0");
       const score = Number(localStorage.getItem("quizScore") || "0");
-      const idx   = Number(localStorage.getItem("quizIdx")   || "0");
-      const done  = localStorage.getItem("lastDone") === "1";
+      const total = 10; // 問題数（index.jsと合わせる）
 
-      // ---- フロー制御：途中で来たら出題へ戻す ----
-      if (!done && idx < TOTAL) {
-        window.location.href = "question.html";
+      function render() {
+        // 全問終了のとき
+        if (idx >= total) {
+            window.location.href = "sum.html";
+          return;
+        }
+
+        // 途中問題の正誤表示
+        box.innerHTML = `
+          <p>正解は ${lastCorrect ? "⭕️ まる" : "❌ ばつ"} でした</p>
+          <p>${explain}</p>
+        `;
+        nextBtn.textContent = "NEXT";
+        nextBtn.onclick = () => window.location.href = "question.html";
       }
-
-      // ---- 表示反映 ----
-      document.getElementById("score").textContent = score;
-      document.getElementById("total").textContent = TOTAL;
-
-      const msgEl = document.getElementById("message");
-      // 6点以上でメッセージを変える（任意）
-      if (score >= 6) {
-        msgEl.textContent = "合格です！この画面を係に見せてください。";
-      } else {
-        msgEl.textContent = "今回は6点未満でした。もう一度挑戦してみよう！";
-      }
-
-      // ---- リスタート：状態リセット → 出題へ ----
-      document.getElementById("restartBtn").addEventListener("click", () => {
-        localStorage.removeItem("quizIdx");
-        localStorage.removeItem("quizScore");
-        localStorage.removeItem("lastCorrect");
-        localStorage.removeItem("lastExplain");
-        localStorage.removeItem("lastDone");
-        window.location.href = "index.html"; // ※以前の index.html から修正
-      });
+      render();
     </script>
   </body>
 </html>
